@@ -15,6 +15,15 @@ class LoadUserDataEvent extends UserDataEvent {
   List<Object> get props => [usersDataList];
 }
 
+class LoadUserDataOfflineEvent extends UserDataEvent {
+  final List<UserData> usersDataList;
+
+  const LoadUserDataOfflineEvent({this.usersDataList = const <UserData>[]});
+
+  @override
+  List<Object> get props => [usersDataList];
+}
+
 class AddUserDataEvent extends UserDataEvent {
   final UserData userData;
 

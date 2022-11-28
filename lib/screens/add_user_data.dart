@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:userdatastorage/models/user_data.dart';
-import 'package:userdatastorage/services/bloc/user_data_bloc.dart';
+import 'package:userdatastorage/services/bloc/user_data_bloc/user_data_bloc.dart';
 
 class AddUserData extends StatefulWidget {
   const AddUserData({super.key});
@@ -78,13 +76,7 @@ class _AddUserDataState extends State<AddUserData> {
       ),
       body: BlocListener<UserDataBloc, UserDataState>(
         listener: (context, state) {
-          if (state is UserDataLoadedState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('User data added'),
-              ),
-            );
-          }
+          if (state is UserDataLoadedState) {}
         },
         child: Form(
           key: _userDataFormKey,

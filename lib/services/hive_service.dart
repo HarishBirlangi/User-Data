@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:userdatastorage/constants/constants.dart';
 import 'package:userdatastorage/models/user_data.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:userdatastorage/services/utility_services.dart';
 
 class HiveService {
   static HiveService? _instance;
@@ -44,6 +45,7 @@ class HiveService {
   Future<void> addUserData(UserData userData) async {
     try {
       await Hive.box<UserData>(usersDataBoxName).add(userData);
+      UtilityServices().showSnackBar('User data added to Hive');
     } catch (e) {
       print(e);
     }

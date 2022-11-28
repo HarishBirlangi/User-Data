@@ -17,3 +17,12 @@ class UserDataLoadedState extends UserDataState {
   @override
   List<Object> get props => [usersDataList];
 }
+
+class UserDataLoadedOfflineState extends UserDataState {
+  final List<UserData> usersDataList;
+
+  const UserDataLoadedOfflineState({this.usersDataList = const <UserData>[]});
+
+  @override
+  List<Object> get props => [usersDataList];
+}
