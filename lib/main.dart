@@ -24,11 +24,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => UserDataBloc()..add(const LoadUserDataEvent()),
-        ),
-        BlocProvider(
           create: (context) =>
               InternetAccessBloc()..add(InternetAccessObserveEvent()),
+        ),
+        BlocProvider(
+          create: (context) => UserDataBloc(),
         ),
       ],
       child: MaterialApp(

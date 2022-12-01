@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:userdatastorage/models/user_data.dart';
+import 'package:userdatastorage/services/bloc/internet_bloc/internet_access_bloc.dart';
 import 'package:userdatastorage/services/bloc/user_data_bloc/user_data_bloc.dart';
 
 class AddUserData extends StatefulWidget {
@@ -74,10 +75,15 @@ class _AddUserDataState extends State<AddUserData> {
       appBar: AppBar(
         title: const Text('Add user data'),
       ),
-      body: BlocListener<UserDataBloc, UserDataState>(
-        listener: (context, state) {
-          if (state is UserDataLoadedState) {}
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<UserDataBloc, UserDataState>(
+            listener: (context, state) {},
+          ),
+          BlocListener<InternetAccessBloc, InternetAccessState>(
+            listener: (context, state) {},
+          ),
+        ],
         child: Form(
           key: _userDataFormKey,
           child: ListView(
@@ -179,10 +185,17 @@ class _AddUserDataState extends State<AddUserData> {
                             emailId: _emailIdController.text,
                             image: _base64Image,
                           );
-                          context
-                              .read<UserDataBloc>()
-                              .add(AddUserDataEvent(userData: newUserData));
-                          Navigator.of(context).pop();
+                          final internetState =
+                              context.read<InternetAccessBloc>().state;
+                          if (internetState is InternetAccessSuccessState) {
+                            context.read<UserDataBloc>().add(
+                                AddUserDataEventOnline(userData: newUserData));
+                            Navigator.of(context).pop();
+                          } else {
+                            context.read<UserDataBloc>().add(
+                                AddUserDataEventOffline(userData: newUserData));
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                       child: const Text('Submit'),

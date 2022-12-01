@@ -12,5 +12,8 @@ class InternetAccessObserveEvent extends InternetAccessEvent {}
 class InternetAccessNotifyEvent extends InternetAccessEvent {
   final bool isConnected;
 
-  const InternetAccessNotifyEvent({this.isConnected = false});
+  const InternetAccessNotifyEvent({required this.isConnected});
+
+  @override
+  List<Object> get props => [isConnected];
 }

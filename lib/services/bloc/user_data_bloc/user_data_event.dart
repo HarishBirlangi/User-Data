@@ -6,28 +6,37 @@ abstract class UserDataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadUserDataEvent extends UserDataEvent {
+class LoadUserDataEventOffline extends UserDataEvent {
   final List<UserData> usersDataList;
 
-  const LoadUserDataEvent({this.usersDataList = const <UserData>[]});
+  const LoadUserDataEventOffline({this.usersDataList = const <UserData>[]});
 
   @override
   List<Object> get props => [usersDataList];
 }
 
-class LoadUserDataOfflineEvent extends UserDataEvent {
+class LoadUserDataEventOnline extends UserDataEvent {
   final List<UserData> usersDataList;
 
-  const LoadUserDataOfflineEvent({this.usersDataList = const <UserData>[]});
+  const LoadUserDataEventOnline({this.usersDataList = const <UserData>[]});
 
   @override
   List<Object> get props => [usersDataList];
 }
 
-class AddUserDataEvent extends UserDataEvent {
+class AddUserDataEventOffline extends UserDataEvent {
   final UserData userData;
 
-  const AddUserDataEvent({required this.userData});
+  const AddUserDataEventOffline({required this.userData});
+
+  @override
+  List<Object> get props => [userData];
+}
+
+class AddUserDataEventOnline extends UserDataEvent {
+  final UserData userData;
+
+  const AddUserDataEventOnline({required this.userData});
 
   @override
   List<Object> get props => [userData];
@@ -42,10 +51,19 @@ class UpdateUserDataEvent extends UserDataEvent {
   List<Object> get props => [userData];
 }
 
-class DeleteUserDataEvent extends UserDataEvent {
+class DeleteUserDataEventOffline extends UserDataEvent {
   final int index;
 
-  const DeleteUserDataEvent({required this.index});
+  const DeleteUserDataEventOffline({required this.index});
+
+  @override
+  List<Object> get props => [];
+}
+
+class DeleteUserDataEventOnline extends UserDataEvent {
+  final int index;
+
+  const DeleteUserDataEventOnline({required this.index});
 
   @override
   List<Object> get props => [];

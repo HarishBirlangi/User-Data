@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:userdatastorage/constants/constants.dart';
 import 'package:userdatastorage/services/bloc/internet_bloc/internet_access_bloc.dart';
 import 'package:userdatastorage/services/bloc/user_data_bloc/user_data_bloc.dart';
+import 'package:userdatastorage/services/fire_store_service.dart';
 
 class UsersDatapage extends StatefulWidget {
   const UsersDatapage({super.key});
@@ -22,15 +24,12 @@ class _MyHomePageState extends State<UsersDatapage> {
       ),
       body: BlocConsumer<InternetAccessBloc, InternetAccessState>(
         listener: (context, state) {
-          print(state);
           if (state is InternetAccessSuccessState) {
-            context.read<UserDataBloc>().add(const LoadUserDataEvent());
             BlocProvider.of<UserDataBloc>(context)
-                .add(const LoadUserDataEvent());
-            print('LoadUserDataEvent called on internet');
+                .add(const LoadUserDataEventOnline());
           } else if (state is InternetAccessFailureState) {
-            context.read<UserDataBloc>().add(const LoadUserDataEvent());
-            print('LoadUserDataEvent called on offline');
+            BlocProvider.of<UserDataBloc>(context)
+                .add(const LoadUserDataEventOffline());
           }
         },
         builder: (context, state) {
@@ -93,9 +92,16 @@ class _MyHomePageState extends State<UsersDatapage> {
                       ),
                       trailing: IconButton(
                           onPressed: () {
-                            context
-                                .read<UserDataBloc>()
-                                .add(DeleteUserDataEvent(index: index));
+                            final internetState =
+                                context.read<InternetAccessBloc>().state;
+                            if (internetState is InternetAccessSuccessState) {
+                              context
+                                  .read<UserDataBloc>()
+                                  .add(DeleteUserDataEventOnline(index: index));
+                            } else {
+                              context.read<UserDataBloc>().add(
+                                  DeleteUserDataEventOffline(index: index));
+                            }
                           },
                           icon: const Icon(Icons.delete)),
                     );

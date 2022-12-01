@@ -62,7 +62,7 @@ class UserData extends Equatable {
 
   @override
   String toString() {
-    return 'UserData(userName: $userName, phoneNumber: $phoneNumber, dateOfBirth: $dateOfBirth, emailId: $emailId, image: $image)';
+    return '-1---';
   }
 
   @override

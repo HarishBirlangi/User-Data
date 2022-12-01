@@ -41,4 +41,10 @@ class FireStoreService {
     }
     return list;
   }
+
+  Future<void> deleteUserData(int index) async {
+    var data = await FirebaseFirestore.instance.collection("user-data").get();
+    String id = data.docs[index].id;
+    await FirebaseFirestore.instance.collection("user-data").doc(id).delete();
+  }
 }
