@@ -42,6 +42,20 @@ class FireStoreService {
     return list;
   }
 
+  Future<void> updateUserData(int index, UserData userData) async {
+    QuerySnapshot data =
+        await FirebaseFirestore.instance.collection("user-data").get();
+    String id = data.docs[index].id;
+    print(id);
+    await FirebaseFirestore.instance.collection("user-data").doc(id).set({
+      'name': userData.userName,
+      'phoneNumber': userData.phoneNumber,
+      'emailId': userData.emailId,
+      'dateOfBirth': userData.dateOfBirth,
+      'image': userData.image,
+    });
+  }
+
   Future<void> deleteUserData(int index) async {
     var data = await FirebaseFirestore.instance.collection("user-data").get();
     String id = data.docs[index].id;

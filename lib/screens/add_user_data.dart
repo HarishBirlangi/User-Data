@@ -1,14 +1,19 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:userdatastorage/constants/constants.dart';
+
 import 'package:userdatastorage/models/user_data.dart';
 import 'package:userdatastorage/services/bloc/internet_bloc/internet_access_bloc.dart';
 import 'package:userdatastorage/services/bloc/user_data_bloc/user_data_bloc.dart';
 
 class AddUserData extends StatefulWidget {
-  const AddUserData({super.key});
+  const AddUserData({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AddUserData> createState() => _AddUserDataState();
@@ -71,6 +76,9 @@ class _AddUserDataState extends State<AddUserData> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as AddUserDataPageArguments;
+    print('Condition: ${args.userDataEdit}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add user data'),
@@ -187,14 +195,26 @@ class _AddUserDataState extends State<AddUserData> {
                           );
                           final internetState =
                               context.read<InternetAccessBloc>().state;
-                          if (internetState is InternetAccessSuccessState) {
-                            context.read<UserDataBloc>().add(
-                                AddUserDataEventOnline(userData: newUserData));
-                            Navigator.of(context).pop();
+
+                          if (args.userDataEdit) {
+                            if (internetState is InternetAccessSuccessState) {
+                              context.read<UserDataBloc>().add(
+                                  UpdateUserDataEventOnline(  index: args.index!,
+                                      userData: newUserData));
+                              Navigator.of(context).pop();
+                            }
                           } else {
-                            context.read<UserDataBloc>().add(
-                                AddUserDataEventOffline(userData: newUserData));
-                            Navigator.of(context).pop();
+                            if (internetState is InternetAccessSuccessState) {
+                              context.read<UserDataBloc>().add(
+                                  AddUserDataEventOnline(
+                                      userData: newUserData));
+                              Navigator.of(context).pop();
+                            } else {
+                              context.read<UserDataBloc>().add(
+                                  AddUserDataEventOffline(
+                                      userData: newUserData));
+                              Navigator.of(context).pop();
+                            }
                           }
                         }
                       },

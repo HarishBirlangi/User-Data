@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
@@ -62,7 +63,7 @@ class UserData extends Equatable {
 
   @override
   String toString() {
-    return '-1---';
+    return 'UserData(userName: $userName, phoneNumber: $phoneNumber, dateOfBirth: $dateOfBirth, emailId: $emailId, image: $image)';
   }
 
   @override

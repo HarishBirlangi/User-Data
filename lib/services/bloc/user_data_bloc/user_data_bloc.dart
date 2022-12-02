@@ -48,8 +48,18 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
       },
     );
 
-    on<UpdateUserDataEvent>(
-      (event, emit) {},
+    on<UpdateUserDataEventOnline>(
+      (event, emit) async {
+        final state = this.state;
+        if (state is UserDataLoadedState) {
+          emit(UserDataLoadingState());
+          await _fireStoreService.updateUserData(event.index, event.userData);
+          usersDataListFetched = await _fireStoreService.getUserData();
+          emit(
+            UserDataLoadedState(usersDataList: usersDataListFetched),
+          );
+        }
+      },
     );
 
     on<DeleteUserDataEventOffline>(

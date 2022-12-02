@@ -42,10 +42,23 @@ class AddUserDataEventOnline extends UserDataEvent {
   List<Object> get props => [userData];
 }
 
-class UpdateUserDataEvent extends UserDataEvent {
+class UpdateUserDataEventOnline extends UserDataEvent {
+  final UserData userData;
+  final int index;
+
+  const UpdateUserDataEventOnline({
+    required this.userData,
+    required this.index,
+  });
+
+  @override
+  List<Object> get props => [userData];
+}
+
+class UpdateUserDataEventOffline extends UserDataEvent {
   final UserData userData;
 
-  const UpdateUserDataEvent({required this.userData});
+  const UpdateUserDataEventOffline({required this.userData});
 
   @override
   List<Object> get props => [userData];
