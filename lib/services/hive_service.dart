@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:userdatastorage/constants/constants.dart';
 import 'package:userdatastorage/models/user_data.dart';
@@ -18,7 +19,7 @@ class HiveService {
       registerHiveAdapters();
       await openHiveBox();
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -47,7 +48,16 @@ class HiveService {
       await Hive.box<UserData>(usersDataBoxName).add(userData);
       UtilityServices().showSnackBar('User data added to Hive');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> updateUserData(UserData userData, int index) async {
+    try {
+      await Hive.box<UserData>(usersDataBoxName).putAt(index, userData);
+      UtilityServices().showSnackBar('User data updated');
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

@@ -29,6 +29,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     on<AddUserDataEventOffline>(
       (event, emit) async {
         if (state is UserDataLoadedState) {
+          emit(UserDataLoadingState());
           _hive.addUserData(event.userData);
           usersDataListFetched = _hive.getUsersData();
           emit(
@@ -40,6 +41,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
 
     on<AddUserDataEventOnline>(
       (event, emit) async {
+        emit(UserDataLoadingState());
         _fireStoreService.addUserData(event.userData);
         usersDataListFetched = await _fireStoreService.getUserData();
         emit(
@@ -55,6 +57,20 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
           emit(UserDataLoadingState());
           await _fireStoreService.updateUserData(event.index, event.userData);
           usersDataListFetched = await _fireStoreService.getUserData();
+          emit(
+            UserDataLoadedState(usersDataList: usersDataListFetched),
+          );
+        }
+      },
+    );
+
+    on<UpdateUserDataEventOffline>(
+      (event, emit) async {
+        final state = this.state;
+        if (state is UserDataLoadedState) {
+          emit(UserDataLoadingState());
+          await _hive.updateUserData(event.userData, event.index);
+          usersDataListFetched = _hive.getUsersData();
           emit(
             UserDataLoadedState(usersDataList: usersDataListFetched),
           );

@@ -57,8 +57,12 @@ class UpdateUserDataEventOnline extends UserDataEvent {
 
 class UpdateUserDataEventOffline extends UserDataEvent {
   final UserData userData;
+  final int index;
 
-  const UpdateUserDataEventOffline({required this.userData});
+  const UpdateUserDataEventOffline({
+    required this.userData,
+    required this.index,
+  });
 
   @override
   List<Object> get props => [userData];

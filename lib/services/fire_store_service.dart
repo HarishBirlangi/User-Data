@@ -46,7 +46,6 @@ class FireStoreService {
     QuerySnapshot data =
         await FirebaseFirestore.instance.collection("user-data").get();
     String id = data.docs[index].id;
-    print(id);
     await FirebaseFirestore.instance.collection("user-data").doc(id).set({
       'name': userData.userName,
       'phoneNumber': userData.phoneNumber,

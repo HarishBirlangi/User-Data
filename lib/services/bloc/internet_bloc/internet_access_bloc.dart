@@ -10,12 +10,9 @@ class InternetAccessBloc
   late StreamSubscription connectivityStreamSubscription;
   InternetAccessBloc() : super(InternetAccessInitialState()) {
     on<InternetAccessObserveEvent>((event, emit) {
-      print('Before connectivity');
-      print(state);
       connectivityStreamSubscription =
           Connectivity().onConnectivityChanged.listen(
         (ConnectivityResult result) {
-          print('ConnectivityResult1 $result');
           if (result == ConnectivityResult.none) {
             add(const InternetAccessNotifyEvent(isConnected: false));
           } else {

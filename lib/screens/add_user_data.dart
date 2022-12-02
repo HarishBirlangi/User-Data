@@ -78,7 +78,6 @@ class _AddUserDataState extends State<AddUserData> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as AddUserDataPageArguments;
-    print('Condition: ${args.userDataEdit}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add user data'),
@@ -199,7 +198,14 @@ class _AddUserDataState extends State<AddUserData> {
                           if (args.userDataEdit) {
                             if (internetState is InternetAccessSuccessState) {
                               context.read<UserDataBloc>().add(
-                                  UpdateUserDataEventOnline(  index: args.index!,
+                                  UpdateUserDataEventOnline(
+                                      index: args.index!,
+                                      userData: newUserData));
+                              Navigator.of(context).pop();
+                            } else {
+                              context.read<UserDataBloc>().add(
+                                  UpdateUserDataEventOffline(
+                                      index: args.index!,
                                       userData: newUserData));
                               Navigator.of(context).pop();
                             }
