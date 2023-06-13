@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:userdatastorage/constants/constants.dart';
 import 'package:userdatastorage/models/user_data.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:userdatastorage/services/utility_services.dart';
 
 class HiveService {
@@ -24,9 +26,15 @@ class HiveService {
   }
 
   Future<void> hiveInitPath() async {
-    final appDocumnetDirectory =
-        await path_provider.getApplicationDocumentsDirectory();
-    Hive.init(appDocumnetDirectory.path);
+    late Directory appDocumentDirectory;
+    if (Platform.isAndroid) {
+      appDocumentDirectory =
+          await path_provider.getApplicationDocumentsDirectory();
+      Hive.init(appDocumentDirectory.path);
+    } else if (Platform.isIOS) {
+      appDocumentDirectory =
+          await path_provider.getApplicationSupportDirectory();
+    }
   }
 
   void registerHiveAdapters() async {

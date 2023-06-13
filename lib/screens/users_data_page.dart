@@ -119,7 +119,8 @@ class _MyHomePageState extends State<UsersDatapage> {
                                                 Navigator.of(context).pushNamed(
                                                     addUserData,
                                                     arguments:
-                                                        AddUserDataPageArguments( index: index,
+                                                        AddUserDataPageArguments(
+                                                            index: index,
                                                             userDataEdit:
                                                                 true));
                                               } else if (value == 1) {
@@ -159,7 +160,8 @@ class _MyHomePageState extends State<UsersDatapage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(addUserData , arguments: AddUserDataPageArguments());
+          Navigator.of(context)
+              .pushNamed(addUserData, arguments: AddUserDataPageArguments());
         },
         tooltip: 'Add new user data',
         child: const Icon(Icons.add),

@@ -1,5 +1,6 @@
 const usersDataRoute = '/UsersData/';
 const addUserData = '/AddUserData/';
+const webViewPageRoute = '/WebViewPage/';
 const usersDataBoxName = 'userDataBox';
 
 class AddUserDataPageArguments {
